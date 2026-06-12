@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Vanakam — secure access portal. Sign in or create an account with a modern, secure login experience." />
+  <title>Qskill task1 — Secure Access Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Animated background -->
+  <div class="bg-scene" aria-hidden="true">
+    <div class="grid-overlay"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="particles" id="particles"></div>
+  </div>
+
+  <!-- Theme toggle -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark and light mode" title="Toggle theme">
+    <i class="fa-solid fa-moon" id="themeIcon" aria-hidden="true"></i>
+  </button>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer" role="status" aria-live="polite"></div>
+
+  <main class="stage">
+    <div class="card" id="authCard">
+
+      <!-- Brand header -->
+      <header class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <span class="brand-mark-inner"></span>
+        </div>
+        <h1 class="brand-title">
+          <span class="type-target" id="typeTarget">Vanakam</span><span class="cursor" aria-hidden="true">|</span>
+        </h1>
+        <p class="brand-sub" id="formSubtitle">Sign in to continue to your dashboard</p>
+      </header>
+
+      <!-- Mode switcher -->
+      <div class="mode-switch" role="tablist" aria-label="Choose sign in or create account">
+        <button class="mode-btn active" id="loginTab" role="tab" aria-selected="true" aria-controls="authForm" type="button">Sign in</button>
+        <button class="mode-btn" id="signupTab" role="tab" aria-selected="false" aria-controls="authForm" type="button">Create account</button>
+        <span class="mode-pill" id="modePill" aria-hidden="true"></span>
+      </div>
+
+      <!-- Form -->
+      <form id="authForm" class="auth-form" novalidate autocomplete="off">
+
+        <!-- Email / Username -->
+        <div class="field">
+          <input type="text" id="email" name="email" class="field-input" placeholder=" " autocomplete="username" aria-describedby="emailError" required />
+          <label for="email" class="field-label">Email or username</label>
+          <i class="field-icon fa-solid fa-envelope" aria-hidden="true"></i>
+          <i class="field-status fa-solid" aria-hidden="true"></i>
+          <p class="field-error" id="emailError" role="alert"></p>
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+          <input type="password" id="password" name="password" class="field-input" placeholder=" " autocomplete="current-password" aria-describedby="passwordError passwordStrength" required />
+          <label for="password" class="field-label">Password</label>
+          <i class="field-icon fa-solid fa-lock" aria-hidden="true"></i>
+          <button type="button" class="field-toggle" id="togglePassword" aria-label="Show password" aria-pressed="false">
+            <i class="fa-solid fa-eye" aria-hidden="true"></i>
+          </button>
+          <p class="field-error" id="passwordError" role="alert"></p>
+          <!-- Strength meter (signup mode) -->
+          <div class="strength-meter" id="strengthMeter" aria-hidden="true">
+            <div class="strength-bars">
+              <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </div>
+            <span class="strength-label" id="strengthLabel">Password strength</span>
+          </div>
+        </div>
+
+        <!-- Confirm Password (signup only) -->
+        <div class="field field-confirm" id="confirmField" aria-hidden="true">
+          <input type="password" id="confirmPassword" name="confirmPassword" class="field-input" placeholder=" " autocomplete="new-password" aria-describedby="confirmError" />
+          <label for="confirmPassword" class="field-label">Confirm password</label>
+          <i class="field-icon fa-solid fa-lock" aria-hidden="true"></i>
+          <button type="button" class="field-toggle" id="toggleConfirm" aria-label="Show confirm password" aria-pressed="false">
+            <i class="fa-solid fa-eye" aria-hidden="true"></i>
+          </button>
+          <p class="field-error" id="confirmError" role="alert"></p>
+        </div>
+
+        <!-- Row: remember me + forgot password -->
+        <div class="form-row" id="loginExtras">
+          <label class="checkbox">
+            <input type="checkbox" id="rememberMe" name="rememberMe" />
+            <span class="checkbox-box" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="link-muted" id="forgotLink">Forgot password?</a>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <span class="submit-label" id="submitLabel">Sign in</span>
+          <span class="loader" id="loader" aria-hidden="true"></span>
+        </button>
+
+        <!-- Divider -->
+        <div class="divider"><span>or continue with</span></div>
+
+        <!-- Social logins -->
+        <div class="social-row">
+          <button type="button" class="social-btn" data-provider="Google" aria-label="Continue with Google">
+            <i class="fa-brands fa-google" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="social-btn" data-provider="GitHub" aria-label="Continue with GitHub">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="social-btn" data-provider="Facebook" aria-label="Continue with Facebook">
+            <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <!-- Switch mode footer -->
+        <p class="switch-footer">
+          <span id="switchPrompt">New here?</span>
+          <button type="button" class="link-strong" id="switchModeBtn">Create an account</button>
+        </p>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- Logged-in / dashboard view -->
+  <main class="stage stage-dashboard" id="dashboardStage" hidden>
+    <div class="card dashboard-card">
+      <div class="dash-icon" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></div>
+      <h2 class="dash-title">Access granted</h2>
+      <p class="dash-text">You're signed in as <strong id="dashUser">user@example.com</strong></p>
+      <p class="dash-sub" id="dashSession">Session started just now</p>
+      <button class="submit-btn" id="logoutBtn" type="button">
+        <span class="submit-label">Log out</span>
+      </button>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
